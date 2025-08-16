@@ -5,12 +5,14 @@ import numpy as np
 # Load the trained model
 model = joblib.load("model.pkl")
 
-# Get feature names from the model (if available)
-try:
-    feature_names = model.feature_names_in_
-except AttributeError:
-    # Fallback if feature names aren't stored
-    feature_names = [f"Feature {i+1}" for i in range(10)]
+# Define feature names
+feature_names = [
+    "Air temperature [K]",
+    "Process temperature [K]",
+    "Rotational speed [rpm]",
+    "Torque [Nm]",
+    "Tool wear [min]"
+]
 
 # Streamlit UI
 st.title("🔍 ML Model Predictor")
@@ -25,5 +27,25 @@ for name in feature_names:
 # Predict button
 if st.button("Predict"):
     input_array = np.array(user_inputs).reshape(1, -1)
-    prediction = model.predict(input_array)
-    st.success(f"✅ Prediction: {prediction[0]}")
+    prediction = model.predict(input_array)[0]
+
+    # If model supports probability
+    try:
+        proba = model.predict_proba(input_array)[0][1]  # Probability of failure
+    except:
+        proba = None
+
+    # Custom messages
+    if prediction == 1:
+        st.error("🚨 NOW YOUR MACHINE IS GOING TO FAIL")
+    else:
+        if proba is not None:
+            if proba > 0.7:
+                st.warning("⚠️ THE MACHINE IS IN RISK")
+            else:
+                st.success("✅ THE MACHINE IS SAFE")
+        else:
+            st.success("✅ THE MACHINE IS SAFE")
+
+    if proba is not None:
+        st.write(f"Prediction Confidence (Failure): {proba*100:.2f}%")
