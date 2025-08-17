@@ -50,10 +50,10 @@ if page == "📡 Live Sensor Dashboard":
         st.success("✅ Live data received from ESP8266")
     else:
         st.warning("⚠️ No live data yet. Showing fallback.")
-        if os.path.exists("static_sensor_data.csv"):
-            df = pd.read_csv("static_sensor_data.csv").tail(100)
+        if os.path.exists("sensor_data.csv"):
+            df = pd.read_csv("sensor_data.csv").tail(100)
         else:
-            st.error("❌ 'static_sensor_data.csv' not found.")
+            st.error("❌ 'sensor_data.csv' not found.")
             st.stop()
 
     st.subheader("📋 Latest Sensor Reading")
@@ -195,5 +195,6 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
 
