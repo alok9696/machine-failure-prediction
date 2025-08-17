@@ -119,10 +119,25 @@ st.pyplot(fig)
 st.header("🧬 Pairplot of Sensor Features (May Take Time)")
 
 if st.button("Generate Pairplot"):
-    sample_df = df_train.sample(n=500, random_state=42)
-    pairplot = sns.pairplot(sample_df, vars=[
-        "Air temperature [K]", "Process temperature [K]", 
-        "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"
-    ], hue="Machine failure", palette="Set2")
-    st.pyplot(pairplot.figure)
+    # Sample fewer points to reduce clutter
+    sample_df = df_train.sample(n=200, random_state=42)
 
+    # Create pairplot with transparency and corner layout
+    pairplot = sns.pairplot(
+        sample_df,
+        vars=["Air temperature [K]", "Process temperature [K]", 
+              "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"],
+        hue="Machine failure",
+        palette="Set2",
+        plot_kws={'alpha': 0.6},
+        corner=True
+    )
+
+    # Increase figure size for better spacing
+   # pairplot.figure.set_size_inches(12, 12)
+
+    # Adjust spacing between subplots
+    pairplot.figure.subplots_adjust(hspace=0.4, wspace=0.4)
+
+    # Display in Streamlit
+    st.pyplot(pairplot.figure)
