@@ -120,7 +120,9 @@ st.header("🧬 Pairplot of Sensor Features (May Take Time)")
 
 if st.button("Generate Pairplot"):
     sample_df = df_train.sample(n=500, random_state=42)
-    fig = sns.pairplot(sample_df, vars=["Air temperature [K]", "Process temperature [K]", 
-                                        "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"],
-                       hue="Machine failure", palette="Set2")
-    st.pyplot(fig)
+    pairplot = sns.pairplot(sample_df, vars=[
+        "Air temperature [K]", "Process temperature [K]", 
+        "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"
+    ], hue="Machine failure", palette="Set2")
+    st.pyplot(pairplot.figure)
+
