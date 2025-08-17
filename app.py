@@ -69,23 +69,36 @@ if page == "📡 Live Sensor Dashboard":
         fig2 = px.line(df, y="Process temperature [K]", title="Process Temperature Over Time", markers=True)
         st.plotly_chart(fig2, use_container_width=True)
 
-    st.subheader("🔍 Sensor Feature Relationships")
+    with st.expander("🔍 Sensor Feature Relationships"):
+    st.subheader("Sensor Feature Relationships")
+
+    # Rename columns for cleaner display
+    df_plot = df.rename(columns={
+        "Air temperature [K]": "Air Temp",
+        "Process temperature [K]": "Process Temp",
+        "Rotational speed [rpm]": "RPM",
+        "Torque [Nm]": "Torque",
+        "Tool wear [min]": "Tool Wear"
+    })
 
     if st.button("Generate Scatter Matrix"):
         fig_matrix = px.scatter_matrix(
-            df,
-            dimensions=[
-                "Air temperature [K]",
-                "Process temperature [K]",
-                "Rotational speed [rpm]",
-                "Torque [Nm]",
-                "Tool wear [min]"
-            ],
+            df_plot,
+            dimensions=["Air Temp", "Process Temp", "RPM", "Torque", "Tool Wear"],
             title="Sensor Feature Relationships",
             color="Type",
-            height=600
+            height=800,
+            width=800
         )
+
+        fig_matrix.update_traces(diagonal_visible=False)
+        fig_matrix.update_layout(
+            margin=dict(l=40, r=40, t=60, b=40),
+            font=dict(size=10),
+        )
+
         st.plotly_chart(fig_matrix, use_container_width=True)
+
 
 # --- Page 2: Machine Failure Prediction ---
 elif page == "🛠️ Failure Prediction":
@@ -204,3 +217,4 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
