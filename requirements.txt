@@ -6,8 +6,5 @@ matplotlib
 scikit-learn
 requests
 joblib
-threading
 paho-mqtt
 plotly
-python-3.10.0
-
