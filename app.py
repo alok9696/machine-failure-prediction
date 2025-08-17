@@ -50,33 +50,41 @@ if page == "📡 Live Sensor Dashboard":
         st.success("✅ Live data received from ESP8266")
     else:
         st.warning("⚠️ No live data yet. Showing fallback.")
-        if os.path.exists("sensor_data.csv"):
-            df = pd.read_csv("sensor_data.csv").tail(100)
+        if os.path.exists("static_sensor_data.csv"):
+            df = pd.read_csv("static_sensor_data.csv").tail(100)
         else:
-            st.error("❌ 'sensor_data.csv' not found.")
+            st.error("❌ 'static_sensor_data.csv' not found.")
             st.stop()
 
     st.subheader("📋 Latest Sensor Reading")
     st.write(df.iloc[-1])
 
-    col1, col2 = st.columns(2)
-    with col1:
-        fig1 = px.line(df, y="temperature", title="Temperature Over Time", markers=True)
-        st.plotly_chart(fig1, use_container_width=True)
-    with col2:
-        fig2 = px.line(df, y="humidity", title="Humidity Over Time", markers=True)
-        st.plotly_chart(fig2, use_container_width=True)
+   col1, col2 = st.columns(2)
 
-    st.subheader("🔍 Sensor Feature Relationships")
-    if st.button("Generate Scatter Matrix"):
-        fig_matrix = px.scatter_matrix(
-            df,
-            dimensions=["temperature", "humidity"],
-            title="Sensor Feature Relationships",
-            color_discrete_sequence=["green"],
-            height=600
-        )
-        st.plotly_chart(fig_matrix, use_container_width=True)
+with col1:
+    fig1 = px.line(df, y="Air temperature [K]", title="Air Temperature Over Time", markers=True)
+    st.plotly_chart(fig1, use_container_width=True)
+
+with col2:
+    fig2 = px.line(df, y="Process temperature [K]", title="Process Temperature Over Time", markers=True)
+    st.plotly_chart(fig2, use_container_width=True)
+
+st.subheader("🔍 Sensor Feature Relationships")
+if st.button("Generate Scatter Matrix"):
+    fig_matrix = px.scatter_matrix(
+        df,
+        dimensions=[
+            "Air temperature [K]",
+            "Process temperature [K]",
+            "Rotational speed [rpm]",
+            "Torque [Nm]",
+            "Tool wear [min]"
+        ],
+        title="Sensor Feature Relationships",
+        color="Type",  # Optional: color by machine type
+        height=600
+    )
+    st.plotly_chart(fig_matrix, use_container_width=True)
 
 # --- Page 2: Machine Failure Prediction ---
 elif page == "🛠️ Failure Prediction":
@@ -195,6 +203,7 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
 
 
