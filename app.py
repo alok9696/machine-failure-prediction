@@ -122,22 +122,23 @@ if st.button("Generate Pairplot"):
     # Sample fewer points to reduce clutter
     sample_df = df_train.sample(n=200, random_state=42)
 
-    # Create pairplot with transparency and corner layout
+    # Create pairplot with scatter plots and transparency
     pairplot = sns.pairplot(
         sample_df,
         vars=["Air temperature [K]", "Process temperature [K]", 
               "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"],
         hue="Machine failure",
         palette="Set2",
-        plot_kws={'alpha': 0.6},
-        corner=True
+        plot_kws={'alpha': 0.6}
     )
 
-    # Increase figure size for better spacing
-   # pairplot.figure.set_size_inches(12, 12)
+    # Set figure size for better layout
+    pairplot.figure.set_size_inches(14, 14)
 
-    # Adjust spacing between subplots
-    pairplot.figure.subplots_adjust(hspace=0.4, wspace=0.4)
+    # Use tight layout to prevent label cutoff
+    pairplot.figure.tight_layout()
 
     # Display in Streamlit
     st.pyplot(pairplot.figure)
+
+
