@@ -69,7 +69,7 @@ if page == "📡 Live Sensor Dashboard":
         fig2 = px.line(df, y="Process temperature [K]", title="Process Temperature Over Time", markers=True)
         st.plotly_chart(fig2, use_container_width=True)
 
-    with st.expander("🔍 Sensor Feature Relationships"):
+    st.expander("🔍 Sensor Feature Relationships"):
     st.subheader("Sensor Feature Relationships")
 
     # Rename columns for cleaner display
@@ -217,4 +217,5 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
