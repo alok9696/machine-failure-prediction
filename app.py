@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import joblib
-import os
+#import os
 import json
 import threading
 import paho.mqtt.client as mqtt
@@ -195,3 +195,4 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
