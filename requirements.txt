@@ -6,8 +6,8 @@ matplotlib
 scikit-learn
 requests
 joblib
-os
 json
 threading
 paho.mqtt.client
 plotly.express
+
