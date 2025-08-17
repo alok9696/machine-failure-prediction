@@ -122,11 +122,14 @@ if st.button("Generate Pairplot"):
     # Sample fewer points to reduce clutter
     sample_df = df_train.sample(n=200, random_state=42)
 
+    # Define feature list
+    features = ["Air temperature [K]", "Process temperature [K]", 
+                "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"]
+
     # Create pairplot
     pairplot = sns.pairplot(
         sample_df,
-        vars=["Air temperature [K]", "Process temperature [K]", 
-              "Rotational speed [rpm]", "Torque [Nm]", "Tool wear [min]"],
+        vars=features,
         hue="Machine failure",
         palette="Set2",
         plot_kws={'alpha': 0.6}
@@ -136,11 +139,13 @@ if st.button("Generate Pairplot"):
     pairplot.figure.set_size_inches(14, 14)
 
     # Force axis labels and ticks on all subplots
-    for ax in pairplot.axes.flatten():
-        if ax is not None:
-            ax.tick_params(labelbottom=True, labelleft=True)
-            ax.set_xlabel(ax.get_xlabel(), fontsize=9)
-            ax.set_ylabel(ax.get_ylabel(), fontsize=9)
+    for i, row in enumerate(features):
+        for j, col in enumerate(features):
+            ax = pairplot.axes[i][j]
+            if ax is not None:
+                ax.set_xlabel(col, fontsize=9)
+                ax.set_ylabel(row, fontsize=9)
+                ax.tick_params(labelbottom=True, labelleft=True)
 
     # Use tight layout to prevent cutoff
     pairplot.figure.tight_layout()
