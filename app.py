@@ -69,9 +69,8 @@ if page == "📡 Live Sensor Dashboard":
         fig2 = px.line(df, y="Process temperature [K]", title="Process Temperature Over Time", markers=True)
         st.plotly_chart(fig2, use_container_width=True)
 
-    #st.expander("Sensor Feature Relationships"):
+    #st.expander("Sensor Feature Relationships")
     st.subheader("Sensor Feature Relationships")
-
     # Rename columns for cleaner display
     df_plot = df.rename(columns={
         "Air temperature [K]": "Air Temp",
@@ -87,17 +86,27 @@ if page == "📡 Live Sensor Dashboard":
             dimensions=["Air Temp", "Process Temp", "RPM", "Torque", "Tool Wear"],
             title="Sensor Feature Relationships",
             color="Type",
-            height=800,
-            width=800
+            height=900,
+            width=900
         )
 
+        # Hide diagonal plots and improve layout
         fig_matrix.update_traces(diagonal_visible=False)
+
+        # Improve axis label visibility
         fig_matrix.update_layout(
-            margin=dict(l=40, r=40, t=60, b=40),
-            font=dict(size=10),
+            font=dict(size=11),
+            margin=dict(l=80, r=80, t=100, b=80),
         )
+
+        # Rotate x-axis labels for all subplots
+        for axis in fig_matrix.layout:
+            if axis.startswith("xaxis") or axis.startswith("yaxis"):
+                fig_matrix.layout[axis].tickangle = 45
+                fig_matrix.layout[axis].title = dict(font=dict(size=12))
 
         st.plotly_chart(fig_matrix, use_container_width=True)
+
 
 
 # --- Page 2: Machine Failure Prediction ---
@@ -217,6 +226,7 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
 
 
