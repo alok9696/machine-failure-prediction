@@ -70,8 +70,10 @@ if page == "📡 Live Sensor Dashboard":
         st.plotly_chart(fig2, use_container_width=True)
 
     #st.expander("Sensor Feature Relationships")
+#with st.expander("🔍 Sensor Feature Relationships"):
     st.subheader("Sensor Feature Relationships")
-    # Rename columns for cleaner display
+
+    # Rename columns for clarity
     df_plot = df.rename(columns={
         "Air temperature [K]": "Air Temp",
         "Process temperature [K]": "Process Temp",
@@ -86,26 +88,30 @@ if page == "📡 Live Sensor Dashboard":
             dimensions=["Air Temp", "Process Temp", "RPM", "Torque", "Tool Wear"],
             title="Sensor Feature Relationships",
             color="Type",
-            height=900,
-            width=900
+            height=1000,
+            width=1000
         )
 
-        # Hide diagonal plots and improve layout
+        # Hide diagonal plots
         fig_matrix.update_traces(diagonal_visible=False)
 
-        # Improve axis label visibility
+        # Improve layout and alignment
         fig_matrix.update_layout(
-            font=dict(size=11),
-            margin=dict(l=80, r=80, t=100, b=80),
+            font=dict(size=12),
+            title_x=0.5,
+            dragmode='select',
+            margin=dict(l=100, r=100, t=100, b=100),
+            autosize=False
         )
 
-        # Rotate x-axis labels for all subplots
+        # Rotate tick labels and align axes
         for axis in fig_matrix.layout:
             if axis.startswith("xaxis") or axis.startswith("yaxis"):
                 fig_matrix.layout[axis].tickangle = 45
-                fig_matrix.layout[axis].title = dict(font=dict(size=12))
+                fig_matrix.layout[axis].title = dict(font=dict(size=14))
 
-        st.plotly_chart(fig_matrix, use_container_width=True)
+        st.plotly_chart(fig_matrix, use_container_width=False)
+
 
 
 
@@ -226,6 +232,7 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
 
 
