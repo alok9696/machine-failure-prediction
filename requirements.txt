@@ -9,4 +9,5 @@ joblib
 threading
 paho-mqtt
 plotly
+python-3.10.0
 
