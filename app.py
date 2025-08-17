@@ -70,6 +70,7 @@ with col2:
     st.plotly_chart(fig2, use_container_width=True)
 
 st.subheader("🔍 Sensor Feature Relationships")
+
 if st.button("Generate Scatter Matrix"):
     fig_matrix = px.scatter_matrix(
         df,
@@ -81,11 +82,10 @@ if st.button("Generate Scatter Matrix"):
             "Tool wear [min]"
         ],
         title="Sensor Feature Relationships",
-        color="Type",  # Optional: color by machine type
+        color="Type",
         height=600
     )
     st.plotly_chart(fig_matrix, use_container_width=True)
-
 # --- Page 2: Machine Failure Prediction ---
 elif page == "🛠️ Failure Prediction":
     st.header("🛠️ Machine Failure Prediction Dashboard")
@@ -203,6 +203,7 @@ elif page == "🛠️ Failure Prediction":
                     ax.tick_params(labelbottom=True, labelleft=True)
         pairplot.figure.tight_layout()
         st.pyplot(pairplot.figure)
+
 
 
 
