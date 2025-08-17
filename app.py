@@ -122,7 +122,7 @@ if st.button("Generate Pairplot"):
     # Sample fewer points to reduce clutter
     sample_df = df_train.sample(n=200, random_state=42)
 
-    # Create pairplot with scatter plots and transparency
+    # Create pairplot
     pairplot = sns.pairplot(
         sample_df,
         vars=["Air temperature [K]", "Process temperature [K]", 
@@ -132,13 +132,18 @@ if st.button("Generate Pairplot"):
         plot_kws={'alpha': 0.6}
     )
 
-    # Set figure size for better layout
+    # Set figure size
     pairplot.figure.set_size_inches(14, 14)
 
-    # Use tight layout to prevent label cutoff
+    # Force axis labels and ticks on all subplots
+    for ax in pairplot.axes.flatten():
+        if ax is not None:
+            ax.tick_params(labelbottom=True, labelleft=True)
+            ax.set_xlabel(ax.get_xlabel(), fontsize=9)
+            ax.set_ylabel(ax.get_ylabel(), fontsize=9)
+
+    # Use tight layout to prevent cutoff
     pairplot.figure.tight_layout()
 
     # Display in Streamlit
     st.pyplot(pairplot.figure)
-
-
